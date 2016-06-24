@@ -1,0 +1,96 @@
+{
+  "validator":  {
+    "firstName": "Aman",
+    "lastName": "Kapoor",
+    "displayName": "Aman Kapoor",
+    "id": 123456
+
+  },
+
+  "locations": [
+    {
+      "name": "Lane 1",
+      "groups": [
+        {
+          "name": "group 1",
+
+          "teams": [
+            { "testStartTime": 1465905600000,
+              "testEndTime": 1465912800000,
+              "teamTestId": 100001,
+              "handler": {
+                "hndlrId": 1000255,
+        				"lastName": "POWERS",
+        				"firstName": "CHAD",
+        				"middleName": "M",
+        				"dateOfBirth": null,
+        				"ssn": "5752",
+        				"contPhoneNbr1": "(979) 248-1540",
+        				"contPhoneNbr2": null,
+        				"email": "CPOWERS@AMK9.COM",
+        				"notes": null,
+        				"nationality": null,
+        				"passportType": null,
+        				"passportNbr": null,
+        				"passportExpDate": null,
+        				"visaIssuingCountry": "UNITED STATES",
+        				"visaNbr": "5EWS697645465966846",
+        				"visaExpDate": 2525576400000,
+        				"weaponsQualType": null,
+        				"weaponsQualDate": 1357966800000,
+        				"traumaTrainingDate": 1357966800000,
+        				"conflictingZoneTrngDate": null,
+        				"cacCardExpDate": null,
+        				"status": "ACTV",
+                "handlerFullName": "POWERS, CHAD - 5752"
+              },
+              "canine": {
+                "createdBy": "1200045",
+        				"createdByUserObject": null,
+        				"createdTs": 1388552400000,
+        				"lastUpdBy": "1200045",
+        				"lastUpdByUserObject": null,
+        				"lastUpdTs": 1388552400000,
+        				"canineId": 1000100,
+        				"name": "JUDY",
+        				"microchipNbr": "966000100192190",
+        				"sourceName": "",
+        				"whelpDate": 1326258000000,
+        				"sex": "FEMALE - SPAYED",
+        				"breed": "SPRINGER SPANIEL",
+        				"color": "WHITE AND BROWN",
+        				"type": "PLAY REWARD",
+        				"rewardType": "",
+        				"notes": "Notes for JUDY Canine ID 1000004",
+        				"status": "ACTV",
+        				"programEntityCompanyId": 1000004,
+        				"attrib1": null,
+        				"attrib2": null,
+        				"attrib3": null,
+        				"nameMicrochip": "JUDY - 2190"
+
+              },
+              "company": {
+                "name": "TRIPLE CANOPY",
+                "abbrevName": "TC",
+                "addressLine1": "12018 SUNRISE VALLEY DR",
+                "addressLine2": null,
+                "city": "RESTON",
+                "state": "VA",
+                "postalCode": "20191",
+                "country": "UNITED STATES",
+                "logoFileName": null,
+                "status": "ACTV",
+                "attrib1": null,
+                "attrib2": null,
+                "attrib3": null,
+                "email": null,
+                "entityTypes": null
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
