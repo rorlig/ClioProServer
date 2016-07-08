@@ -1,16 +1,16 @@
 /**
  * Using Rails-like standard naming convention for endpoints.
- * GET     /api/things              ->  index
- * POST    /api/things              ->  create
- * GET     /api/things/:id          ->  show
- * PUT     /api/things/:id          ->  update
- * DELETE  /api/things/:id          ->  destroy
+ * GET     /api/v1/attempt              ->  index
+ * POST    /api/v1/attempt              ->  create
+ * GET     /api/v1/attempt/:id          ->  show
+ * PUT     /api/v1/attempt/:id          ->  update
+ * DELETE  /api/v1/attempt/:id          ->  destroy
  */
 
 'use strict';
 
 var _ = require('lodash');
-var Thing = require('./thing.model');
+var Attempt = require('./attempt.model');
 
 function handleError(res, statusCode) {
   statusCode = statusCode || 500;
@@ -59,50 +59,47 @@ function removeEntity(res) {
   };
 }
 
-// Gets a list of Things
+// Gets a list of Attempts
 exports.index = function(req, res) {
-  Thing.findAsync()
+  Attempt.findAsync()
     .then(responseWithResult(res))
     .catch(handleError(res));
 };
 
-// Gets a single Thing from the DB
+// Gets a single Attempt from the DB
 exports.show = function(req, res) {
-  Thing.findByIdAsync(req.params.id)
+  Attempt.findByIdAsync(req.params.id)
     .then(handleEntityNotFound(res))
     .then(responseWithResult(res))
     .catch(handleError(res));
 };
 
-// Creates a new Thing in the DB
+// Creates a new Attempt in the DB
 exports.create = function(req, res) {
   var resp = {}
+  console.log(JSON.stringify(req.body))
   resp.success = true
   resp.error = {}
-  resp.response = res.body
+  resp.response = {}
+  resp.body = req.body
   return res.json(resp);
-
-
-  // Thing.createAsync(req.body)
-  //   .then(responseWithResult(res, 201))
-  //   .catch(handleError(res));
 };
 
-// Updates an existing Thing in the DB
+// Updates an existing Attempt in the DB
 exports.update = function(req, res) {
   if (req.body._id) {
     delete req.body._id;
   }
-  Thing.findByIdAsync(req.params.id)
+  Attempt.findByIdAsync(req.params.id)
     .then(handleEntityNotFound(res))
     .then(saveUpdates(req.body))
     .then(responseWithResult(res))
     .catch(handleError(res));
 };
 
-// Deletes a Thing from the DB
+// Deletes a Attempt from the DB
 exports.destroy = function(req, res) {
-  Thing.findByIdAsync(req.params.id)
+  Attempt.findByIdAsync(req.params.id)
     .then(handleEntityNotFound(res))
     .then(removeEntity(res))
     .catch(handleError(res));
