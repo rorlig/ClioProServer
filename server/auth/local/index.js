@@ -10,6 +10,7 @@ var auth = require('../auth.service');
 var router = express.Router();
 
 router.post('/', function(req, res, next) {
+  console.log(req.body)
   passport.authenticate('local', function(err, user, info) {
     var root = path.dirname(require.main.filename);
 
@@ -103,12 +104,57 @@ router.post('/', function(req, res, next) {
       // console.log(exercise)
 
 
-      var obstacles = []
       var hideType = ["Distractor", "Dynamite", "TNT"]
       var carriers = ["Luggage", "Boxes"]
       var isDistractor = true
+      var courseCount = 2
+
       //obstacles within the exercise
-      for (var j = 0; j< 10; ++j) {
+      var courses = []
+      for (var k = 0; k < courseCount ; ++k) {
+        var course =  {}
+        course.obstacles = []
+        for (var j = 0; j< 10; ++j) {
+          var obstacle = {}
+          obstacle.hideType = hideType[Math.floor(Math.random() * hideType.length)]
+          if (obstacle.hideType=="Distractor") {
+            obstacle.isDistractor = true
+          } else {
+            obstacle.isDistractor = false
+          }
+
+          obstacle.carrier = carriers[Math.floor(Math.random() * carriers.length)]
+          obstacle.id = j
+          var roundCount =2
+          var rounds = []
+          for (var m = 0; m < roundCount ; ++m ) {
+            var round = {}
+            round.handlerCalled = ""
+            round.falseCount = -1
+            round.canineResponse = ""
+            round.autoFilled = false
+            rounds.push(round)
+          }
+          obstacle.rounds = rounds
+          course.obstacles.push(obstacle)
+        }
+        // course.obstacles.push(obstacles)
+        courses.push(course)
+      }
+
+      exercise.courses = courses
+      exercises.push(exercise)
+
+    }
+
+    var attempts = []
+    var attemptCount = 10
+    for (i = 0; i< attemptCount;++i ) {
+      var attempt = {}
+      attempt.notes = ""
+      attempt.systemRecommendation = "Fail"
+      var obstacles = []
+      for (j = 0 ; j < 10 ; ++j) {
         var obstacle = {}
         obstacle.hideType = hideType[Math.floor(Math.random() * hideType.length)]
         if (obstacle.hideType=="Distractor") {
@@ -119,19 +165,42 @@ router.post('/', function(req, res, next) {
 
         obstacle.carrier = carriers[Math.floor(Math.random() * carriers.length)]
         obstacle.id = j
+        obstacle.cannineResponse = 0
+        obstacle.targetMissed = false
+        obstacle.handlerCalled = false
+
 
         obstacles.push(obstacle)
       }
-      exercise.obstacles = obstacles
-      exercises.push(exercise)
+      attempt.obstacles = obstacles
+      attempt.exerciseId = 0
+      attempt.teamId = 0
+      attempt.attemptDate = Date()
+      attempt.status = true
+      attempt.id = generateUUID()
+      attempts.push(attempt)
+      attempt.result = "Fail"
 
-    }
+   }
+
+   obj.attempt = attempts
    obj.team = data;
    obj.exercise = exercises
    obj.token = token
    resp.response = obj
+   console.log(JSON.stringify(resp))
    res.json(resp)
  })(req, res, next)
 });
 
+
+function generateUUID() {
+    var d = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (d + Math.random()*16)%16 | 0;
+        d = Math.floor(d/16);
+        return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+    });
+    return uuid;
+};
 module.exports = router;
