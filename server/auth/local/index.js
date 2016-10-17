@@ -130,7 +130,7 @@ router.post('/', function(req, res, next) {
           for (var m = 0; m < roundCount ; ++m ) {
             var round = {}
             round.handlerCalled = ""
-            round.falseCount = -1
+            round.falseCount = 0
             round.canineResponse = ""
             round.autoFilled = false
             rounds.push(round)
