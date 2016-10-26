@@ -149,6 +149,9 @@ router.post('/', function(req, res, next) {
 
     var attempts = []
     var attemptCount = 10
+    var attemptStatus = ["Complete", "Incomplete"]
+
+
     for (i = 0; i< attemptCount;++i ) {
       var attempt = {}
       attempt.notes = ""
@@ -176,10 +179,12 @@ router.post('/', function(req, res, next) {
       attempt.exerciseId = 0
       attempt.teamId = 0
       attempt.attemptDate = Date()
+      attempt.lastUpdateDate = Date()
       attempt.status = true
       attempt.id = generateUUID()
       attempts.push(attempt)
       attempt.result = "Fail"
+      attempt.testStatus = attemptStatus[Math.floor(Math.random() * attemptStatus.length)]
 
    }
 
