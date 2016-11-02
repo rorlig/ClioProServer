@@ -9,6 +9,10 @@ var auth = require('../auth.service');
 
 var router = express.Router();
 
+
+var hideType = ["Distractor", "Dynamite", "TNT"]
+var carriers = ["Luggage", "Boxes"]
+
 router.post('/', function(req, res, next) {
   console.log(req.body)
   passport.authenticate('local', function(err, user, info) {
@@ -104,8 +108,7 @@ router.post('/', function(req, res, next) {
       // console.log(exercise)
 
 
-      var hideType = ["Distractor", "Dynamite", "TNT"]
-      var carriers = ["Luggage", "Boxes"]
+
       var isDistractor = true
       var courseCount = 2
 
@@ -156,49 +159,177 @@ router.post('/', function(req, res, next) {
       var attempt = {}
       attempt.notes = ""
       attempt.systemRecommendation = "Fail"
-      var obstacles = []
-      for (j = 0 ; j < 10 ; ++j) {
-        var obstacle = {}
-        obstacle.hideType = hideType[Math.floor(Math.random() * hideType.length)]
-        if (obstacle.hideType=="Distractor") {
-          obstacle.isDistractor = true
-        } else {
-          obstacle.isDistractor = false
-        }
-
-        obstacle.carrier = carriers[Math.floor(Math.random() * carriers.length)]
-        obstacle.id = j
-        obstacle.cannineResponse = 0
-        obstacle.targetMissed = false
-        obstacle.handlerCalled = false
+      //obstacles within the exercise
 
 
-        obstacles.push(obstacle)
-      }
-      attempt.obstacles = obstacles
-      attempt.exerciseId = 0
+      attempt.exerciseId = Math.floor(Math.random() * 20)
       attempt.teamId = 0
       attempt.attemptDate = Date()
       attempt.lastUpdateDate = Date()
       attempt.status = true
       attempt.id = generateUUID()
       attempts.push(attempt)
-      attempt.result = "Fail"
       attempt.testStatus = attemptStatus[Math.floor(Math.random() * attemptStatus.length)]
 
+      if (exercise.type == "DSORT") {
+        if (attempt.testStatus == "Complete") {
+          attempt.courses = completeEvent()
+          attempt.result = "Fail"
+        } else {
+          attempt.courses = halfComplete()
+          attempt.result = ""
+        }
+      } else {
+        if (attempt.testStatus == "Complete") {
+          attempt.courses = completeEvent()
+          attempt.result = "Fail"
+        } else {
+          attempt.courses = halfComplete()
+          attempt.result = ""
+        }
+      }
+
+
+
+
+      // if (attempt.testStatus == "Incomplete"){
+      //   attempt.courses = halfComplete()
+      // } else {
+      //   attempt.courses = completeEvent()
+      // }
    }
 
    obj.attempt = attempts
    obj.team = data;
    obj.exercise = exercises
    obj.token = token
-   resp.response = obj
    console.log(JSON.stringify(resp))
+   var validator = {
+     "firstName": "Jack",
+     "lastName": "Reacher"
+   }
+   obj.validator = validator
+   resp.response = obj
+
    res.json(resp)
  })(req, res, next)
 });
 
+//Half Complete
+function halfComplete() {
+  var courses = []
+  for (var k = 0; k < 2 ; ++k) {
+    var course =  {}
+    course.obstacles = []
+    var resps = ["YES", "NO",""]
+    for (var j = 0; j< 10; ++j) {
+      var obstacle = {}
+      obstacle.hideType = hideType[Math.floor(Math.random() * hideType.length)]
+      if (obstacle.hideType=="Distractor") {
+        obstacle.isDistractor = true
+      } else {
+        obstacle.isDistractor = false
+      }
 
+      obstacle.carrier = carriers[Math.floor(Math.random() * carriers.length)]
+      obstacle.id = j
+      var roundCount =2
+      var rounds = []
+      for (var m = 0; m < roundCount ; ++m ) {
+        var round = {}
+        if (m==0) {
+          round.handlerCalled = resps[Math.floor(Math.random() * resps.length)]
+          round.falseCount = 0
+          round.canineResponse = resps[Math.floor(Math.random() * resps.length)]
+          round.autoFilled = false
+          rounds.push(round)
+        } else {
+          round.handlerCalled = ""
+          round.falseCount = 0
+          round.canineResponse = ""
+          round.autoFilled = false
+          rounds.push(round)
+        }
+
+      }
+      obstacle.rounds = rounds
+      course.obstacles.push(obstacle)
+    }
+    // course.obstacles.push(obstacles)
+    courses.push(course)
+  }
+  return courses
+}
+//Incomplete event
+function incompleteEvent() {
+  var courses = []
+  for (var k = 0; k < 2 ; ++k) {
+    var course =  {}
+    course.obstacles = []
+    for (var j = 0; j< 10; ++j) {
+      var obstacle = {}
+      obstacle.hideType = hideType[Math.floor(Math.random() * hideType.length)]
+      if (obstacle.hideType=="Distractor") {
+        obstacle.isDistractor = true
+      } else {
+        obstacle.isDistractor = false
+      }
+
+      obstacle.carrier = carriers[Math.floor(Math.random() * carriers.length)]
+      obstacle.id = j
+      var roundCount =2
+      var rounds = []
+      for (var m = 0; m < roundCount ; ++m ) {
+        var round = {}
+        round.handlerCalled = ""
+        round.falseCount = 0
+        round.canineResponse = ""
+        round.autoFilled = false
+        rounds.push(round)
+      }
+      obstacle.rounds = rounds
+      course.obstacles.push(obstacle)
+    }
+    // course.obstacles.push(obstacles)
+    courses.push(course)
+  }
+  return courses
+}
+//complete event
+function completeEvent() {
+  var courses = []
+  for (var k = 0; k < 2 ; ++k) {
+    var course =  {}
+    course.obstacles = []
+    for (var j = 0; j< 10; ++j) {
+      var obstacle = {}
+      obstacle.hideType = hideType[Math.floor(Math.random() * hideType.length)]
+      if (obstacle.hideType=="Distractor") {
+        obstacle.isDistractor = true
+      } else {
+        obstacle.isDistractor = false
+      }
+
+      obstacle.carrier = carriers[Math.floor(Math.random() * carriers.length)]
+      obstacle.id = j
+      var roundCount =2
+      var rounds = []
+      for (var m = 0; m < roundCount ; ++m ) {
+        var round = {}
+        round.handlerCalled = "YES"
+        round.falseCount = 0
+        round.canineResponse = "YES"
+        round.autoFilled = false
+        rounds.push(round)
+      }
+      obstacle.rounds = rounds
+      course.obstacles.push(obstacle)
+    }
+    // course.obstacles.push(obstacles)
+    courses.push(course)
+  }
+  return courses
+}
 function generateUUID() {
     var d = new Date().getTime();
     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
